@@ -28,4 +28,12 @@ public class BeerControllerIT extends BaseIT {
                 .andExpect(view().name("beers/findBeers"))
                 .andExpect(model().attributeExists("beer"));
     }
+
+    @Test
+    void findBeersWithPermitAll() throws Exception {
+        mockMvc.perform(get("/beers/find"))
+                .andExpect(status().isOk())
+                .andExpect(model().attributeExists("beer"))
+                .andExpect(view().name("beers/findBeers"));
+    }
 }
