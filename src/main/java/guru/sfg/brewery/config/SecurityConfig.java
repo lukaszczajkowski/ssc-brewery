@@ -7,7 +7,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
@@ -18,7 +18,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     // so we are overriding it
     @Bean
     PasswordEncoder passwordEncoder() {
-        return NoOpPasswordEncoder.getInstance();
+        // default implementation for password encoders
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
     @Override
@@ -63,15 +64,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth.inMemoryAuthentication()
                 .withUser("spring")
                 // password encoder is required here
-                .password("guru")
+                .password("{bcrypt}$2a$13$O2PlsyuMQBlfKKvo2q8hGeKrlgnAGr1UKnO.catTrDLg.cs.xfNFe")
                 .roles("ADMIN")
                 .and()
                 .withUser("user")
-                .password("password")
+                .password("{sha256}73919b98ee03c39e972ef7202bf52ffa7d73397e68e91b158e1a7d4728c96d029f15400d3557010b")
                 .roles("USER")
                 .and()
                 .withUser("scott")
-                .password("tiger")
+                .password("{ldap}{SSHA}4yDAXRjxi/mVIGUJHZ9OrwG8DMun/hQYXNs7Lw==")
                 .roles("CUSTOMER");
     }
 }

@@ -21,6 +21,7 @@ public class PasswordEncodingTest {
         // different values will be displayed as a random salt is being used
         System.out.println(bcrypt.encode(PASSWORD));
         System.out.println(bcrypt.encode(PASSWORD));
+        System.out.println(bcrypt.encode("guru"));
     }
 
     @Test
@@ -39,6 +40,7 @@ public class PasswordEncodingTest {
         // ldap is using a random salt so the  results will be different
         System.out.println(ldap.encode(PASSWORD));
         System.out.println(ldap.encode(PASSWORD));
+        System.out.println(ldap.encode("tiger"));
 
         String encodedPassword = ldap.encode(PASSWORD);
 
