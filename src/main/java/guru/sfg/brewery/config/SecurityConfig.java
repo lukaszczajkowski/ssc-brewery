@@ -2,6 +2,7 @@ package guru.sfg.brewery.config;
 
 import guru.sfg.brewery.security.RestHeaderAuthFilter;
 import guru.sfg.brewery.security.SfgPasswordEncoderFactories;
+import guru.sfg.brewery.security.UrlParametersAuthFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -24,6 +25,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return filter;
     }
 
+    public UrlParametersAuthFilter urlParametersAuthFilter(AuthenticationManager authenticationManager) {
+        final UrlParametersAuthFilter filter = new UrlParametersAuthFilter(new AntPathRequestMatcher("/api/**"));
+        filter.setAuthenticationManager(authenticationManager);
+        return filter;
+    }
+
     // when we provide an instance of a password encoder, Spring Security is going to pick it up,
     // so we are overriding it
     @Bean
@@ -34,6 +41,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        http.addFilterBefore(urlParametersAuthFilter(authenticationManager()), UsernamePasswordAuthenticationFilter.class)
+                .csrf().disable();
         // adding the custom filter before UsernamePasswordAuthenticationFilter
         http.addFilterBefore(restHeaderAuthFilter(authenticationManager()), UsernamePasswordAuthenticationFilter.class)
             .csrf().disable();
