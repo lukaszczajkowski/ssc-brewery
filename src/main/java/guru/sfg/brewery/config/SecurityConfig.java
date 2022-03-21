@@ -17,7 +17,8 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
+// securedEnabled = true works with @Secured annotation and prePostEnabled with @PreAuthorize annotation
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     // @Autowired
@@ -59,7 +60,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                             .antMatchers("/beers/find", "/beers*").permitAll()
                             //.antMatchers(HttpMethod.GET, "/api/v1/beer/**").permitAll()
                             //.mvcMatchers(HttpMethod.GET, "/api/v1/beerUpc/{upc}").permitAll()
-                            .mvcMatchers(HttpMethod.DELETE, "/api/v1/beer/**").hasRole("ADMIN")
                             .mvcMatchers(HttpMethod.GET, "/brewery/breweries/**", "/brewery/api/v1/breweries/**")
                                     .hasAnyRole("ADMIN",    "CUSTOMER")
                             .mvcMatchers(HttpMethod.GET, "/api/v1/beer/**", "/api/v1/beerUpc/{upc}")
