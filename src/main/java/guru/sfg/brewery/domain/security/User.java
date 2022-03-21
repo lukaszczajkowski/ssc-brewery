@@ -17,8 +17,8 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    private String password;
     private String username;
+    private String password;
 
     @Singular
     @ManyToMany(cascade = CascadeType.MERGE)
