@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -18,6 +17,9 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    // @Autowired
+    //JpaUserDetailsService jpaUserDetailsService;
 
     public RestHeaderAuthFilter restHeaderAuthFilter(AuthenticationManager authenticationManager) {
         RestHeaderAuthFilter filter = new RestHeaderAuthFilter(new AntPathRequestMatcher("/api/**"));
@@ -30,9 +32,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         filter.setAuthenticationManager(authenticationManager);
         return filter;
     }
-
     // when we provide an instance of a password encoder, Spring Security is going to pick it up,
     // so we are overriding it
+
     @Bean
     PasswordEncoder passwordEncoder() {
         // default implementation for password encoders
@@ -45,7 +47,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable();
         // adding the custom filter before UsernamePasswordAuthenticationFilter
         http.addFilterBefore(restHeaderAuthFilter(authenticationManager()), UsernamePasswordAuthenticationFilter.class)
-            .csrf().disable();
+                .csrf().disable();
 
         http
                 .authorizeRequests(authorize -> {
@@ -65,7 +67,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // h2 console config
         http.headers().frameOptions().sameOrigin();
     }
-
     /*
     @Override
     @Bean
@@ -86,8 +87,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
      */
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+
+    //@Override
+    //protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+
+    // auth.userDetailsService(jpaUserDetailsService).passwordEncoder(passwordEncoder());
+
+        /*
         auth.inMemoryAuthentication()
                 .withUser("spring")
                 // password encoder is required here
@@ -101,5 +107,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .withUser("scott")
                 .password("{ldap}{SSHA}4yDAXRjxi/mVIGUJHZ9OrwG8DMun/hQYXNs7Lw==")
                 .roles("CUSTOMER");
-    }
+
+         */
+    //}
 }
