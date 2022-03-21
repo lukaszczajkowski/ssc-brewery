@@ -29,15 +29,15 @@ public class UserLoader implements CommandLineRunner {
     private void loadUsers() {
         if (userRepository.count() == 0) {
             Authority admin = Authority.builder()
-                    .role("ADMIN")
+                    .role("ROLE_ADMIN")
                     .build();
 
             Authority userAuthority = Authority.builder()
-                    .role("USER")
+                    .role("ROLE_USER")
                     .build();
 
             Authority customer = Authority.builder()
-                    .role("CUSTOMER")
+                    .role("ROLE_CUSTOMER")
                     .build();
 
             authorityRepository.saveAll(List.of(admin, userAuthority, customer));
