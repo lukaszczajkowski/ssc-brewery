@@ -12,8 +12,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import javax.transaction.Transactional;
 import java.util.Arrays;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 
 @Slf4j
@@ -27,27 +28,53 @@ public class UserLoader implements CommandLineRunner {
     private final RoleRepository roleRepository;
 
     @Override
+    @Transactional
     public void run(String... args) throws Exception {
         loadUsers();
     }
 
     private void loadUsers() {
         if (userRepository.count() == 0) {
-            // bear authorities
+            // beer authorities
             Authority createBeer = authorityRepository.save(Authority.builder()
                     .permission("beer.create")
                     .build());
-
             Authority updateBeer = authorityRepository.save(Authority.builder()
                     .permission("update.create")
                     .build());
-
             Authority readBeer = authorityRepository.save(Authority.builder()
                     .permission("beer.read")
                     .build());
-
             Authority deleteBeer = authorityRepository.save(Authority.builder()
                     .permission("beer.delete")
+                    .build());
+
+            // customer authorities
+            Authority createCustomer = authorityRepository.save(Authority.builder()
+                    .permission("customer.create")
+                    .build());
+            Authority updateCustomer = authorityRepository.save(Authority.builder()
+                    .permission("customer.create")
+                    .build());
+            Authority readCustomer = authorityRepository.save(Authority.builder()
+                    .permission("customer.read")
+                    .build());
+            Authority deleteCustomer = authorityRepository.save(Authority.builder()
+                    .permission("customer.delete")
+                    .build());
+
+            // brewery authorities
+            Authority createBrewery = authorityRepository.save(Authority.builder()
+                    .permission("brewery.create")
+                    .build());
+            Authority updateBrewery = authorityRepository.save(Authority.builder()
+                    .permission("brewery.create")
+                    .build());
+            Authority readBrewery = authorityRepository.save(Authority.builder()
+                    .permission("brewery.read")
+                    .build());
+            Authority deleteBrewery = authorityRepository.save(Authority.builder()
+                    .permission("brewery.delete")
                     .build());
 
             Role adminRole = roleRepository.save(Role.builder()
@@ -62,9 +89,10 @@ public class UserLoader implements CommandLineRunner {
                     .name("USER")
                     .build());
 
-            adminRole.setAuthorities(Set.of(createBeer, updateBeer, readBeer, deleteBeer));
-            customerRole.setAuthorities(Set.of(readBeer));
-            userRole.setAuthorities(Set.of(readBeer));
+            adminRole.setAuthorities(new HashSet<>(Set.of(createBeer, updateBeer, readBeer, deleteBeer, createCustomer, updateCustomer,
+                    readCustomer, deleteCustomer, createBrewery, updateBrewery, readBrewery, deleteBrewery)));
+            customerRole.setAuthorities(new HashSet<>(Set.of(readBeer, readCustomer, readBrewery)));
+            userRole.setAuthorities(new HashSet<>(Set.of(readBeer)));
 
             roleRepository.saveAll(Arrays.asList(adminRole, customerRole, userRole));
 
@@ -86,7 +114,9 @@ public class UserLoader implements CommandLineRunner {
                     .role(customerRole)
                     .build();
 
-            userRepository.saveAll(List.of(spring, user, customer));
+            userRepository.save(spring);
+            userRepository.save(user);
+            userRepository.save(customer);
 
             log.debug("Users Loaded: " + userRepository.count());
         }
