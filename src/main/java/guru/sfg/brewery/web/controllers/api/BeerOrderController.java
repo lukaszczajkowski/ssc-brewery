@@ -1,6 +1,7 @@
 package guru.sfg.brewery.web.controllers.api;
 
 import guru.sfg.brewery.domain.security.perms.OrderCreatePermission;
+import guru.sfg.brewery.domain.security.perms.OrderPickupPermission;
 import guru.sfg.brewery.domain.security.perms.OrderReadPermission;
 import guru.sfg.brewery.services.BeerOrderService;
 import guru.sfg.brewery.web.model.BeerOrderDto;
@@ -53,6 +54,7 @@ public class BeerOrderController {
 
     @PutMapping("orders/{orderId}/pickup")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @OrderPickupPermission
     public void pickupOrder(@PathVariable("customerId") UUID customerId, @PathVariable("orderId") UUID orderId) {
         beerOrderService.pickupOrder(customerId, orderId);
     }
