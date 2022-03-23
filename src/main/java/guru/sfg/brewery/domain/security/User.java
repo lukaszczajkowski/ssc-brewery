@@ -1,5 +1,6 @@
 package guru.sfg.brewery.domain.security;
 
+import guru.sfg.brewery.domain.Customer;
 import lombok.*;
 import org.springframework.security.core.CredentialsContainer;
 import org.springframework.security.core.GrantedAuthority;
@@ -43,6 +44,9 @@ public class User implements UserDetails, CredentialsContainer {
 
     @Builder.Default
     private Boolean enabled = true;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Customer customer;
 
     @Transient
     public Set<GrantedAuthority> getAuthorities() {
