@@ -16,7 +16,7 @@ public class BaseIT {
     @Autowired
     WebApplicationContext context;
 
-    MockMvc mockMvc;
+    protected MockMvc mockMvc;
 
     /*
     @MockBean

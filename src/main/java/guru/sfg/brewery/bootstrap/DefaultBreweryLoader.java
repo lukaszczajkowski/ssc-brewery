@@ -52,6 +52,9 @@ public class DefaultBreweryLoader implements CommandLineRunner {
     public static final String ST_PETE_DISTRIBUTING = "St Pete Distributing";
     public static final String DUNEDIN_DISTRIBUTING = "Dunedin Distributing";
     public static final String KEY_WEST_DISTRIBUTORS = "Key West Distributors";
+    public static final String ST_PETE_USER = "stPete";
+    public static final String DUNEDIN_USER = "dunedin";
+    public static final String KEYWEST_USER = "keywest";
 
     private final BreweryRepository breweryRepository;
     private final BeerRepository beerRepository;
