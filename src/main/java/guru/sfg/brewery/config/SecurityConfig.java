@@ -54,10 +54,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.addFilterBefore(urlParametersAuthFilter(authenticationManager()), UsernamePasswordAuthenticationFilter.class)
-                .csrf().disable();
+                .csrf().ignoringAntMatchers("/h2-console/**", "/api/**");
         // adding the custom filter before UsernamePasswordAuthenticationFilter
         http.addFilterBefore(restHeaderAuthFilter(authenticationManager()), UsernamePasswordAuthenticationFilter.class)
-                .csrf().disable();
+                .csrf().ignoringAntMatchers("/h2-console/**", "/api/**");
 
         http
                 .authorizeRequests(authorize -> {
