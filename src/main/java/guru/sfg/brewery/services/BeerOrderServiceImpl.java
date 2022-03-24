@@ -133,4 +133,11 @@ public class BeerOrderServiceImpl implements BeerOrderService {
         }
         throw new RuntimeException("Customer Not Found");
     }
+
+    @Override
+    public BeerOrderDto getOrderById(UUID orderId) {
+        BeerOrder beerOrder = beerOrderRepository.findOrderByIdSecure(orderId);
+
+        return beerOrderMapper.beerOrderToDto(beerOrder);
+    }
 }
